@@ -21,6 +21,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String? base64Image;
   XFile? image;
   File? file;
   @override
@@ -30,6 +31,10 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            ElevatedButton(
+              child: Text("Convert to Base64"),
+              onPressed: fromBase64Image,
+            ),
             ElevatedButton(
               child: Text("Convert to Base64"),
               onPressed: toBase64Image,
@@ -87,7 +92,15 @@ class _HomePageState extends State<HomePage> {
       source: ImageSource.gallery,
     );
     Uint8List imageByte = await image!.readAsBytes();
-    String base64Image = base64Encode(imageByte);
+    base64Image = base64Encode(imageByte);
     print(base64Image);
+  }
+
+  void fromBase64Image() async {
+    base64Image == null
+        ? Container()
+        : Image.memory(
+            base64Decode(base64Image!),
+          );
   }
 }
